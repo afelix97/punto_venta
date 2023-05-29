@@ -15,27 +15,26 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Conexion {
 
-	public static Connection conect = null;
-	public static FileReader entrada;
-	public static BufferedReader bufferEntrada;
+	private Connection conect = null;
+	private FileReader entrada;
+	private BufferedReader bufferEntrada;
 	// Creamos un Arreglo en el cual se guardaran las 3 primeras lineas del fichero
-	public static String fichero[] = new String[4];
-	public static JFileChooser buscar;
-	public static String Direccion;
-	public static boolean verificar = true;
-	public static FileNameExtensionFilter FiltrarTexto = new FileNameExtensionFilter(".../.txt", "txt");
-	public static int Bueltas;
-	public static final String URL = "jdbc:mysql://localhost:3306/test";
+	private String fichero[] = new String[4];
+	private JFileChooser buscar;
+	public String urlFichero;
+	private boolean verificar = true;
+	private FileNameExtensionFilter FiltrarTexto = new FileNameExtensionFilter(".../.txt", "txt");
+	private int intentos;
 
-	public static Connection ObtConexion() {
+	public Connection ObtConexion() {
 		buscar = new JFileChooser();
 		try {
-			Direccion = "C:\\config\\db_config.txt";
-			Bueltas = 0;
+			urlFichero = "C:\\config\\db_config.txt";
+			intentos = 0;
 			do {
 				try {
 
-					entrada = new FileReader(Direccion);
+					entrada = new FileReader(urlFichero);
 					// Insertamos en el BufferedReader El Fichero con la configuracion, para poder
 					// leer lo que contiene
 					bufferEntrada = new BufferedReader(entrada);
@@ -43,7 +42,9 @@ public class Conexion {
 					// fichero
 					for (int i = 0; i <= 3; i++) {
 						// Guardamos en el arreglo lo que se encuentra en el fichero linea por linea.
-						fichero[i] = bufferEntrada.readLine();
+						String line = bufferEntrada.readLine();
+						fichero[i] = line != null ? line : "";
+						System.out.println(fichero[i]);
 					}
 
 					/*
@@ -59,8 +60,8 @@ public class Conexion {
 					JOptionPane.showMessageDialog(null,
 							"No Se A Encontrado El Fichero En La Direccion Especificada, Seleccione El Archivo",
 							"Error De Busqueda", JOptionPane.ERROR_MESSAGE);
-					Bueltas++;
-					if (Bueltas > 1) {
+					intentos++;
+					if (intentos > 1) {
 						int Confir = JOptionPane.showConfirmDialog(null,
 								"Es Posible Que Haya Un Error En La Configuracion Del Fichero,Desea Intentar De Nuevo?",
 								"Warning...!!!", JOptionPane.YES_NO_OPTION);
@@ -72,7 +73,7 @@ public class Conexion {
 					buscar.setFileFilter(FiltrarTexto);
 					buscar.showDialog(null, "Seleccione El Fichero De Configuracion");
 					verificar = false;
-					Direccion = "" + buscar.getSelectedFile();
+					urlFichero = "" + buscar.getSelectedFile();
 
 				}
 			} while (verificar == false);
@@ -95,7 +96,17 @@ public class Conexion {
 
 	}
 
+	public void closeConnection() {
+		try {
+			conect.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
+	}
+
 	public static void main(String[] args) {
+		Conexion classCon = new Conexion();
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -103,21 +114,12 @@ public class Conexion {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		Connection conn;
+		Conexion conn = new Conexion();
 
-		conn = Conexion.ObtConexion();
-
-		if (conn != null) {
+		if (conn.ObtConexion() != null) {
 			System.out.println("Conectado...");
-			System.out.println("Direccion Del Fichero: " + Direccion);
+			System.out.println("Direccion Del Fichero: " + classCon.urlFichero);
 			System.out.println(conn);
-
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
 		} else {
 			System.out.println("Desconectado");
