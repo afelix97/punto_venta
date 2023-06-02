@@ -55,6 +55,7 @@ public class UserModel {
 				User user = new User();
 				user.setId(rs.getInt("id"));
 				user.setUser(rs.getString("user"));
+				user.setPass(rs.getString("pass"));
 				user.setFechaAlta(rs.getString("fecha_alta"));
 
 				users.add(user);

@@ -99,6 +99,9 @@ public class ControllerLogin implements WindowListener, ActionListener {
 				JOptionPane.showMessageDialog(viewLogin, "Usuario invalido");
 			} else {
 				JOptionPane.showMessageDialog(viewLogin, "Usuario Correcto");
+				ViewMainFrame initSistem = new ViewMainFrame();
+				initSistem.setVisible(true);
+				viewLogin.dispose();
 			}
 		}
 	}

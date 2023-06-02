@@ -44,7 +44,6 @@ public class Conexion {
 						// Guardamos en el arreglo lo que se encuentra en el fichero linea por linea.
 						String line = bufferEntrada.readLine();
 						fichero[i] = line != null ? line : "";
-						System.out.println(fichero[i]);
 					}
 
 					/*
