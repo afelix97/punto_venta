@@ -22,6 +22,9 @@ import java.awt.Toolkit;
 
 import javax.swing.border.LineBorder;
 import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import javax.swing.border.MatteBorder;
 
 public class Login extends JFrame {
 
@@ -33,6 +36,10 @@ public class Login extends JFrame {
 	public JTextField txtUser;
 	public JPasswordField txtPass;
 	public JButton btnIniciar;
+	private JPanel panel;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
 
 	/**
 	 * Launch the application.
@@ -64,7 +71,7 @@ public class Login extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(Login.class.getResource("/punto_venta/resources/images/empresa/logo.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 775, 499);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.text);
@@ -73,55 +80,82 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 120, 215), 4, true));
+		panel.setBackground(Color.WHITE);
+		panel.setBounds(412, 13, 299, 436);
+		contentPane.add(panel);
+		panel.setLayout(null);
+
 		JLabel lblTitle = new JLabel("Inicio de Sesion");
+		lblTitle.setBounds(20, 170, 259, 52);
+		panel.add(lblTitle);
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setForeground(SystemColor.textHighlight);
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 35));
-		lblTitle.setBounds(69, 0, 298, 52);
-		contentPane.add(lblTitle);
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 30));
 
 		JLabel lblUser = new JLabel("Usuario: ");
+		lblUser.setBounds(55, 232, 188, 27);
+		panel.add(lblUser);
 		lblUser.setForeground(SystemColor.textHighlight);
 		lblUser.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblUser.setBounds(95, 72, 125, 27);
-		contentPane.add(lblUser);
 
 		JLabel lblPass = new JLabel("Contraseña: ");
+		lblPass.setBounds(55, 303, 188, 27);
+		panel.add(lblPass);
 		lblPass.setForeground(SystemColor.textHighlight);
 		lblPass.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblPass.setBounds(95, 123, 125, 27);
-		contentPane.add(lblPass);
 
 		txtUser = new JTextField();
-		txtUser.setHorizontalAlignment(SwingConstants.CENTER);
+		txtUser.setBounds(55, 259, 188, 27);
+		panel.add(txtUser);
+		txtUser.setHorizontalAlignment(SwingConstants.LEFT);
 		txtUser.setToolTipText("Escribe aquí...");
 		txtUser.setForeground(SystemColor.textHighlight);
-		txtUser.setBorder(new LineBorder(SystemColor.textHighlight, 3, true));
+		txtUser.setBorder(new MatteBorder(0, 0, 2, 0, (Color) SystemColor.textHighlight));
 		txtUser.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		txtUser.setBounds(218, 72, 139, 27);
-		contentPane.add(txtUser);
 		txtUser.setColumns(10);
 
 		txtPass = new JPasswordField();
-		txtPass.setHorizontalAlignment(SwingConstants.CENTER);
+		txtPass.setEchoChar('*');
+		txtPass.setBounds(55, 329, 188, 27);
+		panel.add(txtPass);
+		txtPass.setHorizontalAlignment(SwingConstants.LEFT);
 		txtPass.setToolTipText("Escribe aquí...");
 		txtPass.setForeground(SystemColor.textHighlight);
-		txtPass.setBorder(new LineBorder(SystemColor.textHighlight, 3, true));
-		txtPass.setBounds(218, 123, 139, 27);
-		contentPane.add(txtPass);
+		txtPass.setBorder(new MatteBorder(0, 0, 2, 0, (Color) SystemColor.textHighlight));
 
 		btnIniciar = new JButton("Iniciar Sesion");
+		btnIniciar.setBounds(62, 373, 175, 35);
+		panel.add(btnIniciar);
 		btnIniciar.setBorderPainted(false);
 		btnIniciar.setBorder(null);
 		btnIniciar.setForeground(SystemColor.text);
 		btnIniciar.setBackground(SystemColor.textHighlight);
-		btnIniciar.setBounds(148, 204, 139, 35);
 		btnIniciar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		contentPane.add(btnIniciar);
+
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(44, 0, 210, 214);
+		lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/punto_venta/resources/images/empresa/logo210x196.png")));
+		panel.add(lblNewLabel);
+
+		lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("/punto_venta/resources/images/login400x400.png")));
+		lblNewLabel_1.setBounds(50, 75, 312, 312);
+		contentPane.add(lblNewLabel_1);
+
+		lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setIcon(new ImageIcon(Login.class.getResource("/punto_venta/resources/images/fondo2.jpg")));
+		lblNewLabel_2.setBounds(-475, 0, 1370, 939);
+		contentPane.add(lblNewLabel_2);
+		
+		btnIniciar.addActionListener(new ControllerLogin(this));// se pone el boton a la escucha del evento
+		txtPass.addActionListener(new ControllerLogin(this));// se pone el boton a la escucha del evento
+		txtUser.addActionListener(new ControllerLogin(this));// se pone el boton a la escucha del evento
 
 		// se agrega controlador de la vista
 		addWindowListener(new ControllerLogin(this)); // se pone el frame a la escucha del evento
-		btnIniciar.addActionListener(new ControllerLogin(this));// se pone el boton a la escucha del evento
 	}
 
 }

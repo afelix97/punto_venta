@@ -2,6 +2,7 @@ package punto_venta.controllers;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -13,18 +14,22 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
-
-import punto_venta.models.*;
 import punto_venta.views.*;
 
 //controlador de la vista login
 public class ControllerViewMain implements WindowListener, ActionListener, MouseMotionListener, MouseListener {
 
-	// se instancia clase userModel
-	UserModel userModel = new UserModel();
 	// se instancia la vista Login, para poder ser manipulada desde el controlador
 	private ViewMainFrame viewMain;
+
+	// load views
+	JpAcercaDe jpAcercaDe = new JpAcercaDe();
+	JpProveedores jpProveedores = new JpProveedores();
+	JpPuntoVenta jpPuntoVenta = new JpPuntoVenta();
+	JpProductos jpProductos = new JpProductos();
+	JpVentas jpVentas = new JpVentas();
 
 	public ControllerViewMain(ViewMainFrame viewMainFrame) {
 		super();
@@ -38,18 +43,28 @@ public class ControllerViewMain implements WindowListener, ActionListener, Mouse
 
 		// dependiendo a que boton se le esta haciendo click sera la accion a ejecutar
 		if (e.getSource() == viewMain.btnShowPuntoVenta) {
+			clearSelectionMenu();
+			viewMain.btnShowPuntoVenta.setBackground(SystemColor.controlShadow);
 			clickBtnPuntoVenta();
 		}
 		if (e.getSource() == viewMain.btnShowProveedores) {
+			clearSelectionMenu();
+			viewMain.btnShowProveedores.setBackground(SystemColor.controlShadow);
 			clickBtnProveedores();
 		}
 		if (e.getSource() == viewMain.btnShowProductos) {
+			clearSelectionMenu();
+			viewMain.btnShowProductos.setBackground(SystemColor.controlShadow);
 			clickBtnProductos();
 		}
 		if (e.getSource() == viewMain.btnShowVentas) {
+			clearSelectionMenu();
+			viewMain.btnShowVentas.setBackground(SystemColor.controlShadow);
 			clickBtnVentas();
 		}
 		if (e.getSource() == viewMain.btnShowConfig) {
+			clearSelectionMenu();
+			viewMain.btnShowConfig.setBackground(SystemColor.controlShadow);
 			clickBtnConfig();
 		}
 		if (e.getSource() == viewMain.btnCerrarSesion) {
@@ -57,28 +72,37 @@ public class ControllerViewMain implements WindowListener, ActionListener, Mouse
 		}
 	}
 
+	// quita el efecto de seleccion de opciones del menu
+	private void clearSelectionMenu() {
+		viewMain.btnShowConfig.setBackground(UIManager.getColor("menu"));
+		viewMain.btnShowPuntoVenta.setBackground(UIManager.getColor("menu"));
+		viewMain.btnShowProveedores.setBackground(UIManager.getColor("menu"));
+		viewMain.btnShowProductos.setBackground(UIManager.getColor("menu"));
+		viewMain.btnShowVentas.setBackground(UIManager.getColor("menu"));
+	}
+
 	private void clickBtnConfig() {
-		JpAcercaDe jpAcercaDe = new JpAcercaDe();
+
 		showView(jpAcercaDe);
 	}
 
 	private void clickBtnVentas() {
-		JpVentas jpVentas = new JpVentas();
+
 		showView(jpVentas);
 	}
 
 	private void clickBtnProductos() {
-		JpProductos jpProductos = new JpProductos();
+
 		showView(jpProductos);
 	}
 
 	private void clickBtnProveedores() {
-		JpProveedores jpProveedores = new JpProveedores();
+
 		showView(jpProveedores);
 	}
 
 	private void clickBtnPuntoVenta() {
-		JpPuntoVenta jpPuntoVenta = new JpPuntoVenta();
+
 		showView(jpPuntoVenta);
 	}
 
@@ -133,7 +157,7 @@ public class ControllerViewMain implements WindowListener, ActionListener, Mouse
 	// controlador
 	@Override
 	public void windowOpened(WindowEvent e) {
-		userModel.getUsers();
+		
 	}
 
 	@Override

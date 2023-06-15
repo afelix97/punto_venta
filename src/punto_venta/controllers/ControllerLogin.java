@@ -33,6 +33,14 @@ public class ControllerLogin implements WindowListener, ActionListener {
 			actionBtnIniciarSesion();
 
 		}
+
+		if (e.getSource() == viewLogin.txtUser) {
+			viewLogin.txtPass.requestFocus();
+		}
+
+		if (e.getSource() == viewLogin.txtPass) {
+			viewLogin.btnIniciar.doClick();
+		}
 	}
 
 	// metodo que se manda llamar al abrir la ventana a la cual esta ligado el
