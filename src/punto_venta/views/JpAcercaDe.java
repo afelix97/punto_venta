@@ -15,6 +15,10 @@ import javax.swing.border.LineBorder;
 
 import punto_venta.controllers.ControllerConfiguracion;
 
+/**
+ * @author 190090072@upve.edu.mx
+ *
+ */
 public class JpAcercaDe extends JPanel {
 
 	/**

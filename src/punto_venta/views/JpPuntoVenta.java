@@ -8,6 +8,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+
+import punto_venta.controllers.ControllerViewPuntoVenta;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.SystemColor;
@@ -19,6 +22,10 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+/**
+ * @author 190090072@upve.edu.mx
+ *
+ */
 public class JpPuntoVenta extends JPanel {
 
 	/**
@@ -26,19 +33,23 @@ public class JpPuntoVenta extends JPanel {
 	 */
 	private static final long serialVersionUID = -8706669607118444108L;
 	private JScrollPane scrollPane;
-	private JTable table;
+	public JTable table;
 	public DefaultTableModel modelo;
-	private JTextField txtCodigo;
-	private JTextField txtProducto;
-	private JTextField txtCantidad;
 	private JLabel lblPrecio;
-	private JTextField txtPrecio;
 	private JLabel lblCantidad_2;
-	private JTextField txtStock;
-	private JTextField txtCliente;
-	private JTextField txtTotal;
-	private JButton btnAgregar;
-	private JButton btnEliminarRow;
+	public JTextField txtPrecio;
+	public JTextField txtCodigo;
+	public JTextField txtProducto;
+	public JTextField txtCantidad;
+	public JTextField txtStock;
+	public JTextField txtCliente;
+	public JTextField txtTotal;
+	public JButton btnAgregar;
+	public JButton btnEliminarRow;
+	public JButton btnNuevaVenta;
+	public JButton btnFacturar;
+
+	String[] userSesion;
 
 	/**
 	 * Create the panel.
@@ -56,7 +67,7 @@ public class JpPuntoVenta extends JPanel {
 		JLabel lblTotal_1 = new JLabel("$");
 		lblTotal_1.setForeground(SystemColor.textHighlight);
 		lblTotal_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 42));
-		lblTotal_1.setBounds(1146, 379, 32, 69);
+		lblTotal_1.setBounds(980, 383, 32, 69);
 		add(lblTotal_1);
 
 		scrollPane = new JScrollPane();
@@ -65,6 +76,7 @@ public class JpPuntoVenta extends JPanel {
 
 		scrollPane.setOpaque(false);
 		table = new JTable(modelo);
+		table.setDefaultEditor(Object.class, null);
 		table.setForeground(new Color(0, 0, 128));
 		table.setFont(new Font("Tahoma", Font.BOLD, 11));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -80,12 +92,12 @@ public class JpPuntoVenta extends JPanel {
 		table.setOpaque(false);
 		scrollPane.setViewportView(table);
 
-		JButton btnNuevaVenta = new JButton("Nueva Venta");
+		btnNuevaVenta = new JButton("Nueva Venta");
 		btnNuevaVenta.setForeground(UIManager.getColor("ToolTip.foreground"));
 		btnNuevaVenta.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNuevaVenta.setBorderPainted(false);
 		btnNuevaVenta.setBorder(null);
-		btnNuevaVenta.setBackground(UIManager.getColor("ToolTip.background"));
+		btnNuevaVenta.setBackground(new Color(224, 255, 255));
 		btnNuevaVenta.setBounds(1217, 56, 122, 56);
 		add(btnNuevaVenta);
 
@@ -116,14 +128,14 @@ public class JpPuntoVenta extends JPanel {
 		txtCliente.setBounds(183, 426, 249, 26);
 		add(txtCliente);
 
-		JButton btnFacturar = new JButton("Facturar");
+		btnFacturar = new JButton("Finalizar venta");
 		btnFacturar.setEnabled(false);
 		btnFacturar.setForeground(Color.WHITE);
 		btnFacturar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnFacturar.setBorderPainted(false);
 		btnFacturar.setBorder(null);
 		btnFacturar.setBackground(new Color(0, 128, 0));
-		btnFacturar.setBounds(629, 396, 104, 56);
+		btnFacturar.setBounds(616, 396, 130, 56);
 		add(btnFacturar);
 
 		JLabel lblTotal = new JLabel("Total:");
@@ -182,10 +194,11 @@ public class JpPuntoVenta extends JPanel {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-				if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE && c != KeyEvent.VK_DELETE) {
+				if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE && c != KeyEvent.VK_DELETE
+						&& c != KeyEvent.VK_ENTER) {
 					e.consume();
 				}
-				if (txtCodigo.getText().length() >= 10) {
+				if (txtCodigo.getText().length() >= 8) {
 					e.consume();
 				}
 			}
@@ -284,5 +297,29 @@ public class JpPuntoVenta extends JPanel {
 		btnAgregar.setBackground(new Color(0, 128, 0));
 		panel.add(btnAgregar);
 
+		btnAgregar.addActionListener(new ControllerViewPuntoVenta(this));
+		btnEliminarRow.addActionListener(new ControllerViewPuntoVenta(this));
+		btnNuevaVenta.addActionListener(new ControllerViewPuntoVenta(this));
+		btnFacturar.addActionListener(new ControllerViewPuntoVenta(this));
+		txtCodigo.addActionListener(new ControllerViewPuntoVenta(this));
+
+		txtCodigo.addKeyListener(new ControllerViewPuntoVenta(this));
+		txtCantidad.addKeyListener(new ControllerViewPuntoVenta(this));
+		txtCliente.addKeyListener(new ControllerViewPuntoVenta(this));
+
+		table.addMouseListener(new ControllerViewPuntoVenta(this));
+		addHierarchyListener(new ControllerViewPuntoVenta(this));
 	}
+
+	// obtiene el usuario logueado
+	public String[] getUserSesion() {
+		return userSesion;
+	}
+
+	// se debe setear cuando se manda llammar este jpanel desde otra vista o
+	// controlador
+	public void setUserSesion(String[] userSesion) {
+		this.userSesion = userSesion;
+	}
+
 }

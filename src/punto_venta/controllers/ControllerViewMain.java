@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,7 +17,7 @@ import javax.swing.UIManager;
 import punto_venta.views.*;
 
 //controlador de la vista login
-public class ControllerViewMain implements WindowListener, ActionListener, MouseMotionListener, MouseListener {
+public class ControllerViewMain implements ActionListener, MouseMotionListener, MouseListener {
 
 	// se instancia la vista Login, para poder ser manipulada desde el controlador
 	private ViewMainFrame viewMain;
@@ -30,6 +28,7 @@ public class ControllerViewMain implements WindowListener, ActionListener, Mouse
 	JpPuntoVenta jpPuntoVenta = new JpPuntoVenta();
 	JpProductos jpProductos = new JpProductos();
 	JpVentas jpVentas = new JpVentas();
+	JpEmpleados jpEmpleados = new JpEmpleados();
 
 	public ControllerViewMain(ViewMainFrame viewMainFrame) {
 		super();
@@ -70,6 +69,18 @@ public class ControllerViewMain implements WindowListener, ActionListener, Mouse
 		if (e.getSource() == viewMain.btnCerrarSesion) {
 			clickBtnCerrarSesion();
 		}
+		if (e.getSource() == viewMain.btnShowEmpleados) {
+			clearSelectionMenu();
+			viewMain.btnShowEmpleados.setBackground(SystemColor.controlShadow);
+			clickBtnEmpleados();
+		}
+	}
+
+	private void clickBtnEmpleados() {
+		// Se setea del panel JPEmpleados la variable UserSesion, con el contenido del
+		// label UserName de la vista MainFrame
+		jpEmpleados.setUserSesion(viewMain.getLblUserName());
+		showView(jpEmpleados);
 	}
 
 	// quita el efecto de seleccion de opciones del menu
@@ -79,6 +90,7 @@ public class ControllerViewMain implements WindowListener, ActionListener, Mouse
 		viewMain.btnShowProveedores.setBackground(UIManager.getColor("menu"));
 		viewMain.btnShowProductos.setBackground(UIManager.getColor("menu"));
 		viewMain.btnShowVentas.setBackground(UIManager.getColor("menu"));
+		viewMain.btnShowEmpleados.setBackground(UIManager.getColor("menu"));
 	}
 
 	private void clickBtnConfig() {
@@ -102,7 +114,9 @@ public class ControllerViewMain implements WindowListener, ActionListener, Mouse
 	}
 
 	private void clickBtnPuntoVenta() {
-
+		// Se setea del panel JPuntoVenta la variable UserSesion, con el contenido del
+		// label UserName de la vista MainFrame
+		jpPuntoVenta.setUserSesion(viewMain.getLblUserName());
 		showView(jpPuntoVenta);
 	}
 
@@ -153,54 +167,11 @@ public class ControllerViewMain implements WindowListener, ActionListener, Mouse
 		viewMain.btnCerrarSesion.setBackground(new Color(220, 20, 60));
 	}
 
-	// metodo que se manda llamar al abrir la ventana a la cual esta ligado el
-	// controlador
-	@Override
-	public void windowOpened(WindowEvent e) {
-		
-	}
-
 	@Override
 	public void mouseClicked(java.awt.event.MouseEvent e) {
 		if (e.getSource() == viewMain.lblLogo) {
 			initHome();
 		}
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -3,12 +3,8 @@ package punto_venta.views;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -17,9 +13,15 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import punto_venta.config.Conexion;
+
+import punto_venta.controllers.ControllerViewVentas;
+
 import javax.swing.border.MatteBorder;
 
+/**
+ * @author 190090072@upve.edu.mx
+ *
+ */
 public class JpVentas extends JPanel {
 
 	/**
@@ -27,9 +29,11 @@ public class JpVentas extends JPanel {
 	 */
 	private static final long serialVersionUID = -8706669607118444108L;
 	private JScrollPane scrollPane;
-	private JTable table;
-	public DefaultTableModel modelo;
-	private JTextField textField;
+	public JTable table;
+	public DefaultTableModel tableModel;
+	public JTextField txtFiltro;
+	public JButton btnBuscar;
+	private JLabel lblNewLabel_1;
 
 	/**
 	 * Create the panel.
@@ -43,24 +47,26 @@ public class JpVentas extends JPanel {
 		this.setLayout(null);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(111, 138, 1140, 352);
+		scrollPane.setBounds(111, 138, 1140, 319);
 		scrollPane.setOpaque(false);
 		this.add(scrollPane);
 
-		modelo = new DefaultTableModel();
-		table = new JTable(modelo);
+		tableModel = new DefaultTableModel();
+		table = new JTable(tableModel);
+		table.setDefaultEditor(Object.class, null);
+		table.setDragEnabled(true);
+		table.setAutoCreateRowSorter(true);
+		table.setShowHorizontalLines(false);
 		table.setForeground(new Color(0, 0, 128));
 		table.setFont(new Font("Tahoma", Font.BOLD, 11));
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		table.setOpaque(false);
 		table.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "ID", "CODIGO", "NOMBRE", "PROVEEDOR", "PRECIO", "STOCK" }));
+				new String[] { "ID", "CLIENTE", "FECHA", "ID_EMPLEADO", "TOTAL" }));
 		table.getColumnModel().getColumn(0).setPreferredWidth(10);
-		table.getColumnModel().getColumn(1).setPreferredWidth(25);
+		table.getColumnModel().getColumn(1).setPreferredWidth(100);
 		table.getColumnModel().getColumn(2).setPreferredWidth(100);
 		table.getColumnModel().getColumn(3).setPreferredWidth(25);
-		table.getColumnModel().getColumn(4).setPreferredWidth(200);
-		table.getColumnModel().getColumn(5).setPreferredWidth(200);
 		table.setOpaque(false);
 		scrollPane.setViewportView(table);
 
@@ -72,21 +78,21 @@ public class JpVentas extends JPanel {
 
 		JLabel lblNewLabel = new JLabel("Ventas");
 		lblNewLabel.setForeground(SystemColor.textHighlight);
-		panel_1.add(lblNewLabel);
 		lblNewLabel.setBackground(Color.WHITE);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		textField = new JTextField();
-		textField.setOpaque(false);
-		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setForeground(SystemColor.textHighlight);
-		textField.setFont(new Font("Tahoma", Font.BOLD, 16));
-		textField.setColumns(10);
-		textField.setBorder(new MatteBorder(0, 0, 3, 0, (Color) new Color(0, 120, 215)));
-		textField.setBounds(226, 100, 249, 37);
-		add(textField);
-		
+		panel_1.add(lblNewLabel);
+
+		txtFiltro = new JTextField();
+		txtFiltro.setOpaque(false);
+		txtFiltro.setHorizontalAlignment(SwingConstants.CENTER);
+		txtFiltro.setForeground(SystemColor.textHighlight);
+		txtFiltro.setFont(new Font("Tahoma", Font.BOLD, 16));
+		txtFiltro.setColumns(10);
+		txtFiltro.setBorder(new MatteBorder(0, 0, 3, 0, (Color) new Color(0, 120, 215)));
+		txtFiltro.setBounds(226, 100, 249, 37);
+		add(txtFiltro);
+
 		JLabel lblFiltrar = new JLabel("Buscar: ");
 		lblFiltrar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFiltrar.setForeground(SystemColor.infoText);
@@ -94,8 +100,8 @@ public class JpVentas extends JPanel {
 		lblFiltrar.setBackground(Color.WHITE);
 		lblFiltrar.setBounds(111, 89, 118, 47);
 		add(lblFiltrar);
-		
-		JButton btnBuscar = new JButton("Buscar");
+
+		btnBuscar = new JButton("Buscar");
 		btnBuscar.setForeground(Color.WHITE);
 		btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnBuscar.setBorderPainted(false);
@@ -103,36 +109,17 @@ public class JpVentas extends JPanel {
 		btnBuscar.setBackground(new Color(0, 128, 0));
 		btnBuscar.setBounds(483, 100, 112, 35);
 		add(btnBuscar);
-		
-		loadTable();
-	}
 
-	private void loadTable() {
-		((DefaultTableModel) table.getModel()).setRowCount(0);
-		Statement stm;
-		Conexion conn = new Conexion();
-		try {
-			stm = conn.ObtConexion().createStatement();
-			ResultSet result = stm.executeQuery("Select * from ventas");
-			int NumCol = table.getModel().getColumnCount();
+		// evento que se detona cuando el panel se muestra
+		addHierarchyListener(new ControllerViewVentas(this));
+		btnBuscar.addActionListener(new ControllerViewVentas(this));
+		txtFiltro.addKeyListener(new ControllerViewVentas(this));
+		table.addMouseListener(new ControllerViewVentas(this));
 
-			Object[] fila = new Object[NumCol];
-			while (result.next()) {
-
-				fila[0] = result.getString(1);
-				fila[1] = result.getString(2);
-				fila[2] = result.getString(3);
-				fila[3] = result.getString(4);
-				fila[4] = result.getString(5);
-				fila[5] = result.getString(6);
-
-				((DefaultTableModel) table.getModel()).addRow(fila);
-			}
-			stm.close();
-			result.close();
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Se Han Econtraron Errores: " + e, "Error", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-		}
+		lblNewLabel_1 = new JLabel("Nota: Hacer doble click en la fila para ver los detalles de la venta.");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_1.setBounds(803, 452, 448, 25);
+		add(lblNewLabel_1);
 	}
 }

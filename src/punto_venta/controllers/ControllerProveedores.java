@@ -85,7 +85,7 @@ public class ControllerProveedores implements HierarchyListener, ActionListener,
 			int respuesta = JOptionPane.showConfirmDialog(null, "¿Seguro que desea eliminar este registro?", "Atencion",
 					JOptionPane.YES_NO_OPTION);
 			if (respuesta == JOptionPane.OK_OPTION) {
-				
+
 				if (proveedorModel.deleteProveedor(idDelete)) {
 					JOptionPane.showMessageDialog(jpProveedores, "Informacion eliminada con exito.");
 				}
@@ -224,8 +224,8 @@ public class ControllerProveedores implements HierarchyListener, ActionListener,
 		}
 
 	}
-//Metodo que se detona cuando se da click en la tabla
 
+	// Metodo que se detona cuando se da click en la tabla
 	private void actionTable() {
 		int selectedRow = jpProveedores.table.getSelectedRow();
 		if (selectedRow != -1) {

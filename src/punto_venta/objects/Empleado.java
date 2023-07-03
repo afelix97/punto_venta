@@ -1,20 +1,14 @@
 package punto_venta.objects;
 
-public class User {
+public class Empleado {
 	private int id;
+	private String nombre;
+	private String apellido;
 	private String user;
 	private String pass;
 	private String fechaAlta;
 
-	public User(int id, String user, String pass, String fechaAlta) {
-		super();
-		this.id = id;
-		this.user = user;
-		this.pass = pass;
-		this.fechaAlta = fechaAlta;
-	}
-
-	public User() {
+	public Empleado() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -25,6 +19,22 @@ public class User {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 
 	public String getUser() {
@@ -53,7 +63,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", user=" + user + ", pass=" + pass + ", fechaAlta=" + fechaAlta + "]";
+		return "Empleado [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", user=" + user + ", pass="
+				+ pass + ", fechaAlta=" + fechaAlta + "]";
 	}
 
 }

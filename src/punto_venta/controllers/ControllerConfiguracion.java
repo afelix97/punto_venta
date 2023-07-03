@@ -23,36 +23,14 @@ public class ControllerConfiguracion implements HierarchyListener, ActionListene
 	private void guardarDatos() {
 		try {
 			FileWriter writer = new FileWriter(URL + FILE_NAME);
-			writer.write(jpAcercaDe.txtNombre.getText() + "," + jpAcercaDe.txtTelefono.getText() + ","
-					+ jpAcercaDe.txtDireccion.getText() + "," + jpAcercaDe.txtRazonSocial.getText());
+			writer.write(jpAcercaDe.txtNombre.getText() + "&" + jpAcercaDe.txtTelefono.getText() + "&"
+					+ jpAcercaDe.txtDireccion.getText() + "&" + jpAcercaDe.txtRazonSocial.getText());
 
 			writer.close();
 			JOptionPane.showMessageDialog(jpAcercaDe, "Datos guardados exitosamente");
 		} catch (IOException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(jpAcercaDe, "Error al guardar los datos");
-		}
-	}
-
-	private void cargarDatos() {
-		validarExistenciaArchivo();
-		try {
-			FileReader reader = new FileReader(URL + FILE_NAME);
-			BufferedReader bufferedReader = new BufferedReader(reader);
-			String linea = bufferedReader.readLine();
-			if (linea != null) {
-				String[] datos = linea.split(",");
-				jpAcercaDe.txtNombre.setText(datos[0]);
-				jpAcercaDe.txtTelefono.setText(datos[1]);
-				jpAcercaDe.txtDireccion.setText(datos[2]);
-				jpAcercaDe.txtRazonSocial.setText(datos[3]);
-			} else {
-				JOptionPane.showMessageDialog(jpAcercaDe, "No se encontraron datos");
-			}
-			bufferedReader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(jpAcercaDe, "Error al cargar los datos");
 		}
 	}
 
@@ -69,6 +47,28 @@ public class ControllerConfiguracion implements HierarchyListener, ActionListene
 		if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && jpAcercaDe.isShowing()) {
 			// Acción a realizar cuando el JPanel se muestra
 			cargarDatos();
+		}
+	}
+
+	private void cargarDatos() {
+		validarExistenciaArchivo();
+		try {
+			FileReader reader = new FileReader(URL + FILE_NAME);
+			BufferedReader bufferedReader = new BufferedReader(reader);
+			String linea = bufferedReader.readLine();
+			if (linea != null) {
+				String[] datos = linea.split("&");
+				jpAcercaDe.txtNombre.setText(datos[0]);
+				jpAcercaDe.txtTelefono.setText(datos[1]);
+				jpAcercaDe.txtDireccion.setText(datos[2]);
+				jpAcercaDe.txtRazonSocial.setText(datos[3]);
+			} else {
+				JOptionPane.showMessageDialog(jpAcercaDe, "No se encontraron datos");
+			}
+			bufferedReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(jpAcercaDe, "Error al cargar los datos");
 		}
 	}
 

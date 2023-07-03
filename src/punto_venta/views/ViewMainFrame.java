@@ -24,6 +24,10 @@ import java.awt.SystemColor;
 import javax.swing.JSeparator;
 import javax.swing.border.MatteBorder;
 
+/**
+ * @author 190090072@upve.edu.mx
+ *
+ */
 public class ViewMainFrame extends JFrame {
 
 	/**
@@ -41,6 +45,10 @@ public class ViewMainFrame extends JFrame {
 	public JLabel lblLogo;
 	private final JPanel panel = new JPanel();
 	private JLabel lblFondo;
+	private JSeparator separator_3;
+	public JButton btnShowEmpleados;
+	private JLabel lblNewLabel;
+	private JLabel lblUserName;
 
 	/**
 	 * Launch the application.
@@ -55,7 +63,7 @@ public class ViewMainFrame extends JFrame {
 					e1.printStackTrace();
 				}
 				try {
-					ViewMainFrame frame = new ViewMainFrame();
+					Login frame = new Login();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -100,7 +108,7 @@ public class ViewMainFrame extends JFrame {
 
 		btnShowProveedores = new JButton("Proveedores");
 		btnShowProveedores.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnShowProveedores.setBounds(270, 16, 150, 39);
+		btnShowProveedores.setBounds(611, 16, 134, 39);
 		btnShowProveedores.setBorder(new LineBorder(SystemColor.desktop, 4, true));
 		btnShowProveedores.setForeground(new Color(25, 25, 112));
 		btnShowProveedores.setBackground(UIManager.getColor("menu"));
@@ -110,13 +118,13 @@ public class ViewMainFrame extends JFrame {
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBackground(SystemColor.windowBorder);
 		separator.setForeground(SystemColor.windowBorder);
-		separator.setBounds(690, 16, 9, 39);
+		separator.setBounds(771, 16, 9, 39);
 		jpMenu.add(separator);
 
 		btnShowProductos = new JButton("Productos");
 		btnShowProductos.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnShowProductos.setBorder(new LineBorder(SystemColor.desktop, 4, true));
-		btnShowProductos.setBounds(503, 16, 150, 39);
+		btnShowProductos.setBounds(221, 16, 134, 39);
 		btnShowProductos.setForeground(new Color(25, 25, 112));
 		btnShowProductos.setBackground(UIManager.getColor("menu"));
 		jpMenu.add(btnShowProductos);
@@ -126,27 +134,27 @@ public class ViewMainFrame extends JFrame {
 		btnShowPuntoVenta.setForeground(new Color(25, 25, 112));
 		btnShowPuntoVenta.setBackground(UIManager.getColor("menu"));
 		btnShowPuntoVenta.setBorder(new LineBorder(SystemColor.desktop, 4, true));
-		btnShowPuntoVenta.setBounds(37, 16, 150, 39);
+		btnShowPuntoVenta.setBounds(26, 16, 134, 39);
 		jpMenu.add(btnShowPuntoVenta);
 
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setOrientation(SwingConstants.VERTICAL);
 		separator_2.setForeground(SystemColor.windowBorder);
 		separator_2.setBackground(SystemColor.windowBorder);
-		separator_2.setBounds(457, 16, 9, 39);
+		separator_2.setBounds(186, 16, 9, 39);
 		jpMenu.add(separator_2);
 
 		JSeparator separator_2_1 = new JSeparator();
 		separator_2_1.setOrientation(SwingConstants.VERTICAL);
 		separator_2_1.setForeground(SystemColor.windowBorder);
 		separator_2_1.setBackground(SystemColor.windowBorder);
-		separator_2_1.setBounds(224, 16, 9, 39);
+		separator_2_1.setBounds(576, 16, 9, 39);
 		jpMenu.add(separator_2_1);
 
 		btnShowVentas = new JButton("Ventas");
 		btnShowVentas.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnShowVentas.setBorder(new LineBorder(SystemColor.desktop, 4, true));
-		btnShowVentas.setBounds(736, 16, 150, 39);
+		btnShowVentas.setBounds(806, 16, 134, 39);
 		btnShowVentas.setForeground(new Color(25, 25, 112));
 		btnShowVentas.setBackground(UIManager.getColor("menu"));
 		jpMenu.add(btnShowVentas);
@@ -155,16 +163,31 @@ public class ViewMainFrame extends JFrame {
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setForeground(SystemColor.windowBorder);
 		separator_1.setBackground(SystemColor.windowBorder);
-		separator_1.setBounds(923, 16, 9, 39);
+		separator_1.setBounds(966, 16, 9, 39);
 		jpMenu.add(separator_1);
 
 		btnShowConfig = new JButton("Configuracion");
 		btnShowConfig.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnShowConfig.setBorder(new LineBorder(SystemColor.desktop, 4, true));
-		btnShowConfig.setBounds(969, 16, 150, 39);
+		btnShowConfig.setBounds(1001, 16, 134, 39);
 		btnShowConfig.setForeground(new Color(25, 25, 112));
 		btnShowConfig.setBackground(UIManager.getColor("menu"));
 		jpMenu.add(btnShowConfig);
+
+		separator_3 = new JSeparator();
+		separator_3.setOrientation(SwingConstants.VERTICAL);
+		separator_3.setForeground(SystemColor.windowBorder);
+		separator_3.setBackground(SystemColor.windowBorder);
+		separator_3.setBounds(381, 16, 9, 39);
+		jpMenu.add(separator_3);
+
+		btnShowEmpleados = new JButton("Empleados");
+		btnShowEmpleados.setForeground(new Color(25, 25, 112));
+		btnShowEmpleados.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnShowEmpleados.setBorder(new LineBorder(SystemColor.desktop, 4, true));
+		btnShowEmpleados.setBackground(UIManager.getColor("menu"));
+		btnShowEmpleados.setBounds(416, 16, 134, 39);
+		jpMenu.add(btnShowEmpleados);
 
 		jpBody = new JPanel();
 		jpBody.setOpaque(false);
@@ -199,6 +222,21 @@ public class ViewMainFrame extends JFrame {
 		btnCerrarSesion.addMouseMotionListener(new ControllerViewMain(this));// se pone el boton a la escucha del evento
 		panel.add(btnCerrarSesion);
 
+		lblNewLabel = new JLabel("USUARIO: ");
+		lblNewLabel.setForeground(new Color(245, 255, 250));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(0, 1, 118, 27);
+		panel.add(lblNewLabel);
+
+		lblUserName = new JLabel("USER NAME");
+		lblUserName.setBorder(new MatteBorder(0, 0, 3, 0, (Color) new Color(240, 255, 255)));
+		lblUserName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUserName.setForeground(new Color(245, 255, 250));
+		lblUserName.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
+		lblUserName.setBounds(115, 1, 248, 27);
+		panel.add(lblUserName);
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new MatteBorder(2, 2, 2, 2, (Color) SystemColor.textHighlight));
 		panel_1.setBackground(SystemColor.text);
@@ -212,7 +250,7 @@ public class ViewMainFrame extends JFrame {
 		lblDateTime.setFont(new Font("Source Serif Pro Black", Font.BOLD, 20));
 
 		DateTimeThread clockThread = new DateTimeThread(lblDateTime);
-		
+
 		lblFondo = new JLabel("");
 		lblFondo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFondo.setIcon(new ImageIcon(ViewMainFrame.class.getResource("/punto_venta/resources/images/fondo2.jpg")));
@@ -220,13 +258,20 @@ public class ViewMainFrame extends JFrame {
 		contentPane.add(lblFondo);
 		clockThread.start();
 
-		addWindowListener(new ControllerViewMain(this));
 		lblLogo.addMouseListener(new ControllerViewMain(this));
 		btnShowPuntoVenta.addActionListener(new ControllerViewMain(this));// se pone el boton a la escucha del evento
 		btnShowProveedores.addActionListener(new ControllerViewMain(this));// se pone el boton a la escucha del evento
 		btnShowProductos.addActionListener(new ControllerViewMain(this));// se pone el boton a la escucha del evento
 		btnShowVentas.addActionListener(new ControllerViewMain(this));// se pone el boton a la escucha del evento
 		btnShowConfig.addActionListener(new ControllerViewMain(this));// se pone el boton a la escucha del evento
+		btnShowEmpleados.addActionListener(new ControllerViewMain(this));// se pone el boton a la escucha del evento
+	}
 
+	public void setLblUserName(String lblUserNameText) {
+		this.lblUserName.setText(lblUserNameText);
+	}
+
+	public String[] getLblUserName() {
+		return lblUserName.getText().split(" - ");
 	}
 }

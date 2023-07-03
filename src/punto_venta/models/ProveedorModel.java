@@ -35,7 +35,6 @@ public class ProveedorModel {
 				proveedores.add(proveedor);
 
 			}
-			System.out.println(proveedores.toString());
 			stmt.close();
 			rs.close();
 		} catch (SQLException e) {
@@ -45,6 +44,38 @@ public class ProveedorModel {
 			conn.closeConnection();
 		}
 		return proveedores;
+	}
+
+	// funcion que devuelve todos los usuarios
+	public Proveedor getProveedor(int id) {
+		Proveedor proveedor = null;
+		try {
+			Statement stmt = conn.ObtConexion().createStatement();
+			String query = "select * from proveedores where id =" + id + " limit 1;";
+
+			ResultSet rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+				proveedor = new Proveedor();
+				proveedor.setId(rs.getInt("id"));
+				proveedor.setNombre(rs.getString("nombre"));
+				proveedor.setRfc(rs.getString("rfc"));
+				proveedor.setDireccion(rs.getString("direccion"));
+				proveedor.setRazonSocial(rs.getString("razon_social"));
+				proveedor.setTelefono(rs.getString("telefono"));
+				proveedor.setFechaAlta(rs.getString("fecha_alta"));
+
+			}
+
+			stmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		} finally {
+			conn.closeConnection();
+		}
+		return proveedor;
 	}
 
 	public boolean guardarProveedor(Proveedor objProveedor) {

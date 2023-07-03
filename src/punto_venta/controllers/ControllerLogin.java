@@ -2,8 +2,6 @@ package punto_venta.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JOptionPane;
 
@@ -12,10 +10,10 @@ import punto_venta.views.*;
 import punto_venta.objects.*;
 
 //controlador de la vista login
-public class ControllerLogin implements WindowListener, ActionListener {
+public class ControllerLogin implements ActionListener {
 
 	// se instancia clase userModel
-	UserModel userModel = new UserModel();
+	EmpleadosModel userModel = new EmpleadosModel();
 	// se instancia la vista Login, para poder ser manipulada desde el controlador
 	private Login viewLogin;
 
@@ -43,53 +41,10 @@ public class ControllerLogin implements WindowListener, ActionListener {
 		}
 	}
 
-	// metodo que se manda llamar al abrir la ventana a la cual esta ligado el
-	// controlador
-	@Override
-	public void windowOpened(WindowEvent e) {
-		userModel.getUsers();
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
 	// se define las acciones que se llevaran acabo
 	private void actionBtnIniciarSesion() {
 
-		User objUser = new User();
+		Empleado objUser = new Empleado();
 
 		// se obtiene el usuario y password capturado en la vista
 		String user = viewLogin.txtUser.getText();
@@ -103,12 +58,16 @@ public class ControllerLogin implements WindowListener, ActionListener {
 			JOptionPane.showMessageDialog(viewLogin, "Todos los campos son obligatorios!", "Advertencia",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			if (!userModel.validateUser(objUser)) {
+			int idEmpleado = userModel.validateUser(objUser);
+			if (idEmpleado <= 0) {
 				JOptionPane.showMessageDialog(viewLogin, "Usuario invalido");
 			} else {
 				JOptionPane.showMessageDialog(viewLogin, "Usuario Correcto");
 				ViewMainFrame initSistem = new ViewMainFrame();
 				initSistem.setVisible(true);
+				// se setea de la vista principal el nombre del empleado
+				// que inicio sesion
+				initSistem.setLblUserName(idEmpleado + " - " + objUser.getUser());
 				viewLogin.dispose();
 			}
 		}

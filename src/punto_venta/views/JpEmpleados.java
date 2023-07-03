@@ -4,13 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import punto_venta.controllers.ControllerProveedores;
+import punto_venta.controllers.ControllerEmpleados;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -26,31 +27,32 @@ import javax.swing.SwingConstants;
  * @author 190090072@upve.edu.mx
  *
  */
-public class JpProveedores extends JPanel {
+public class JpEmpleados extends JPanel {
 
 	private static final long serialVersionUID = -7688365530795619596L;
 
 	public JTable table;
 	public DefaultTableModel modelo;
 	private JScrollPane scrollPane;
-	public JTextField txtRuc;
 	public JTextField txtNombre;
+	public JTextField txtApellido;
 	private JLabel lblNombre;
-	public JTextField txtTelefono;
+	public JTextField txtUser;
 	private JLabel lblTelefono;
-	public JTextField txtDireccion;
+	public JPasswordField txtPass;
 	private JLabel lblDireccion;
-	public JTextField txtRazonSocial;
-	private JLabel lblRazonSocial;
 	public JButton btnGuardar;
 	public JButton btnCancelar;
 	public JButton btnActualizar;
 	public JButton btnEliminar;
 
+	// se almacena el usuario de la sesion
+	String[] userSesion;
+
 	/**
 	 * Create the panel.
 	 */
-	public JpProveedores() {
+	public JpEmpleados() {
 		setOpaque(false);
 		this.setBackground(Color.WHITE);
 		this.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
@@ -71,45 +73,27 @@ public class JpProveedores extends JPanel {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setOpaque(false);
 		table.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "ID", "RUC", "NOMBRE", "TELEFONO", "DIRECCION", "RAZON SOCIAL" }));
+				new String[] { "ID", "NOMBRE", "APELLIDO", "USUARIO", "FECHA ALTA" }));
 		table.getColumnModel().getColumn(0).setPreferredWidth(5);
 		table.getColumnModel().getColumn(1).setPreferredWidth(100);
 		table.getColumnModel().getColumn(2).setPreferredWidth(100);
 		table.getColumnModel().getColumn(3).setPreferredWidth(50);
-		table.getColumnModel().getColumn(4).setPreferredWidth(200);
-		table.getColumnModel().getColumn(5).setPreferredWidth(200);
+		table.getColumnModel().getColumn(4).setPreferredWidth(50);
+		table.setOpaque(false);
 		scrollPane.setViewportView(table);
 
 		JPanel jpForm = new JPanel();
 		jpForm.setBackground(SystemColor.text);
-		jpForm.setBorder(new TitledBorder(new LineBorder(new Color(0, 120, 215), 8, true), " Datos del proveedor ",
+		jpForm.setBorder(new TitledBorder(new LineBorder(new Color(0, 120, 215), 8, true), " Datos del Empleado",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 120, 215)));
 		jpForm.setBounds(29, 10, 367, 480);
 		add(jpForm);
 		jpForm.setLayout(null);
 
-		JLabel lblCliente = new JLabel("RUC:");
-		lblCliente.setBounds(22, 35, 150, 26);
+		JLabel lblCliente = new JLabel("NOMBRE:");
+		lblCliente.setBounds(22, 43, 150, 26);
 		jpForm.add(lblCliente);
 		lblCliente.setFont(new Font("Tahoma", Font.BOLD, 16));
-
-		txtRuc = new JTextField();
-		txtRuc.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char c = e.getKeyChar();
-				if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE && c != KeyEvent.VK_DELETE) {
-					e.consume();
-				}
-				if (txtRuc.getText().length() >= 10) {
-					e.consume();
-				}
-			}
-
-		});
-		txtRuc.setBounds(194, 35, 150, 26);
-		jpForm.add(txtRuc);
-		txtRuc.setColumns(10);
 
 		txtNombre = new JTextField();
 		txtNombre.addKeyListener(new KeyAdapter() {
@@ -120,66 +104,50 @@ public class JpProveedores extends JPanel {
 					e.consume();
 				}
 			}
-		});
-		txtNombre.setColumns(10);
-		txtNombre.setBounds(194, 96, 150, 26);
-		jpForm.add(txtNombre);
 
-		lblNombre = new JLabel("NOMBRE:");
+		});
+		txtNombre.setBounds(194, 43, 150, 26);
+		jpForm.add(txtNombre);
+		txtNombre.setColumns(10);
+
+		txtApellido = new JTextField();
+		txtApellido.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!Character.isLetter(c) && c != KeyEvent.VK_SPACE && c != KeyEvent.VK_DELETE) {
+					e.consume();
+				}
+			}
+		});
+		txtApellido.setColumns(10);
+		txtApellido.setBounds(194, 112, 150, 26);
+		jpForm.add(txtApellido);
+
+		lblNombre = new JLabel("APELLIDO:");
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNombre.setBounds(22, 96, 150, 26);
+		lblNombre.setBounds(22, 112, 150, 26);
 		jpForm.add(lblNombre);
 
-		txtTelefono = new JTextField();
-		txtTelefono.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char c = e.getKeyChar();
-				if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE && c != KeyEvent.VK_DELETE) {
-					e.consume();
-				}
-				if (txtTelefono.getText().length() >= 10) {
-					e.consume();
-				}
-			}
-		});
-		txtTelefono.setColumns(10);
-		txtTelefono.setBounds(194, 157, 150, 26);
-		jpForm.add(txtTelefono);
+		txtUser = new JTextField();
+		txtUser.setColumns(10);
+		txtUser.setBounds(194, 181, 150, 26);
+		jpForm.add(txtUser);
 
-		lblTelefono = new JLabel("TELEFONO:");
+		lblTelefono = new JLabel("USUARIO/MAIL:");
 		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblTelefono.setBounds(22, 157, 150, 26);
+		lblTelefono.setBounds(22, 181, 150, 26);
 		jpForm.add(lblTelefono);
 
-		txtDireccion = new JTextField();
-		txtDireccion.setColumns(10);
-		txtDireccion.setBounds(194, 218, 150, 26);
-		jpForm.add(txtDireccion);
+		txtPass = new JPasswordField();
+		txtPass.setColumns(10);
+		txtPass.setBounds(194, 250, 150, 26);
+		jpForm.add(txtPass);
 
-		lblDireccion = new JLabel("DIRECCION:");
+		lblDireccion = new JLabel("PASSWORD:");
 		lblDireccion.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblDireccion.setBounds(22, 218, 150, 26);
+		lblDireccion.setBounds(22, 250, 150, 26);
 		jpForm.add(lblDireccion);
-
-		txtRazonSocial = new JTextField();
-		txtRazonSocial.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char c = e.getKeyChar();
-				if (!Character.isLetter(c) && c != ' ' && c != KeyEvent.VK_DELETE) {
-					e.consume();
-				}
-			}
-		});
-		txtRazonSocial.setColumns(10);
-		txtRazonSocial.setBounds(194, 279, 150, 26);
-		jpForm.add(txtRazonSocial);
-
-		lblRazonSocial = new JLabel("RAZON SOCIAL:");
-		lblRazonSocial.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblRazonSocial.setBounds(22, 279, 150, 26);
-		jpForm.add(lblRazonSocial);
 
 		btnGuardar = new JButton("Guardar");
 		btnGuardar.setEnabled(false);
@@ -188,7 +156,7 @@ public class JpProveedores extends JPanel {
 		btnGuardar.setBorderPainted(false);
 		btnGuardar.setBorder(null);
 		btnGuardar.setBackground(new Color(0, 128, 0));
-		btnGuardar.setBounds(197, 340, 139, 35);
+		btnGuardar.setBounds(197, 319, 139, 35);
 		jpForm.add(btnGuardar);
 
 		btnCancelar = new JButton("Limpiar");
@@ -197,7 +165,7 @@ public class JpProveedores extends JPanel {
 		btnCancelar.setBorderPainted(false);
 		btnCancelar.setBorder(null);
 		btnCancelar.setBackground(SystemColor.windowBorder);
-		btnCancelar.setBounds(29, 340, 139, 35);
+		btnCancelar.setBounds(29, 319, 139, 35);
 		jpForm.add(btnCancelar);
 
 		btnActualizar = new JButton("Actualizar");
@@ -207,7 +175,7 @@ public class JpProveedores extends JPanel {
 		btnActualizar.setBorderPainted(false);
 		btnActualizar.setBorder(null);
 		btnActualizar.setBackground(SystemColor.textHighlight);
-		btnActualizar.setBounds(197, 410, 139, 35);
+		btnActualizar.setBounds(197, 397, 139, 35);
 		jpForm.add(btnActualizar);
 
 		btnEliminar = new JButton("Eliminar");
@@ -217,7 +185,7 @@ public class JpProveedores extends JPanel {
 		btnEliminar.setBorderPainted(false);
 		btnEliminar.setBorder(null);
 		btnEliminar.setBackground(new Color(220, 20, 60));
-		btnEliminar.setBounds(29, 410, 139, 35);
+		btnEliminar.setBounds(29, 397, 139, 35);
 		jpForm.add(btnEliminar);
 
 		JPanel jpTitleTable = new JPanel();
@@ -226,7 +194,7 @@ public class JpProveedores extends JPanel {
 		jpTitleTable.setBounds(425, 10, 906, 55);
 		add(jpTitleTable);
 
-		JLabel lblTitleTable = new JLabel("Proveedores");
+		JLabel lblTitleTable = new JLabel("Empleados");
 		lblTitleTable.setForeground(SystemColor.textHighlight);
 		jpTitleTable.add(lblTitleTable);
 		lblTitleTable.setBackground(Color.WHITE);
@@ -234,18 +202,29 @@ public class JpProveedores extends JPanel {
 		lblTitleTable.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// se hace referencia a los eventos del controlador de la vista
-		txtRuc.addKeyListener(new ControllerProveedores(this));
-		txtNombre.addKeyListener(new ControllerProveedores(this));
-		txtTelefono.addKeyListener(new ControllerProveedores(this));
-		txtDireccion.addKeyListener(new ControllerProveedores(this));
-		txtRazonSocial.addKeyListener(new ControllerProveedores(this));
-		btnGuardar.addActionListener(new ControllerProveedores(this));
-		btnCancelar.addActionListener(new ControllerProveedores(this));
-		btnActualizar.addActionListener(new ControllerProveedores(this));
-		btnEliminar.addActionListener(new ControllerProveedores(this));
+		txtApellido.addKeyListener(new ControllerEmpleados(this));
+		txtNombre.addKeyListener(new ControllerEmpleados(this));
+		txtUser.addKeyListener(new ControllerEmpleados(this));
+		txtPass.addKeyListener(new ControllerEmpleados(this));
 
-		table.addMouseListener(new ControllerProveedores(this));
+		btnGuardar.addActionListener(new ControllerEmpleados(this));
+		btnCancelar.addActionListener(new ControllerEmpleados(this));
+		btnActualizar.addActionListener(new ControllerEmpleados(this));
+		btnEliminar.addActionListener(new ControllerEmpleados(this));
+
+		table.addMouseListener(new ControllerEmpleados(this));
 		// evento que se detona cuando el panel se muestra
-		addHierarchyListener(new ControllerProveedores(this));
+		addHierarchyListener(new ControllerEmpleados(this));
+	}
+
+	// obtiene el usuario logueado
+	public String[] getUserSesion() {
+		return userSesion;
+	}
+
+	// se debe setear cuando se manda llammar este jpanel desde otra vista o
+	// controlador
+	public void setUserSesion(String[] userSesion) {
+		this.userSesion = userSesion;
 	}
 }

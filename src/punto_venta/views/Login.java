@@ -26,6 +26,10 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.border.MatteBorder;
 
+/**
+ * @author 190090072@upve.edu.mx
+ *
+ */
 public class Login extends JFrame {
 
 	/**
@@ -136,7 +140,8 @@ public class Login extends JFrame {
 
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(44, 0, 210, 214);
-		lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/punto_venta/resources/images/empresa/logo210x196.png")));
+		lblNewLabel.setIcon(
+				new ImageIcon(Login.class.getResource("/punto_venta/resources/images/empresa/logo210x196.png")));
 		panel.add(lblNewLabel);
 
 		lblNewLabel_1 = new JLabel("");
@@ -149,13 +154,11 @@ public class Login extends JFrame {
 		lblNewLabel_2.setIcon(new ImageIcon(Login.class.getResource("/punto_venta/resources/images/fondo2.jpg")));
 		lblNewLabel_2.setBounds(-475, 0, 1370, 939);
 		contentPane.add(lblNewLabel_2);
-		
+
 		btnIniciar.addActionListener(new ControllerLogin(this));// se pone el boton a la escucha del evento
 		txtPass.addActionListener(new ControllerLogin(this));// se pone el boton a la escucha del evento
 		txtUser.addActionListener(new ControllerLogin(this));// se pone el boton a la escucha del evento
 
-		// se agrega controlador de la vista
-		addWindowListener(new ControllerLogin(this)); // se pone el frame a la escucha del evento
 	}
 
 }
