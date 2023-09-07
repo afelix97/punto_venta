@@ -17,7 +17,7 @@ public class ProveedorModel {
 		ArrayList<Proveedor> proveedores = new ArrayList<>();
 		try {
 			Statement stmt = conn.ObtConexion().createStatement();
-			String query = "select * from proveedores;";
+			String query = "select * from proveedores where eliminado = 0;";
 
 			ResultSet rs = stmt.executeQuery(query);
 
@@ -139,7 +139,7 @@ public class ProveedorModel {
 	public boolean deleteProveedor(int id) {
 		boolean isDelete = false;
 		try {
-			String sql = "DELETE FROM PROVEEDORES WHERE id = ?;";
+			String sql = "UPDATE proveedores SET eliminado = 1 WHERE id = ?;";
 			PreparedStatement statement = conn.ObtConexion().prepareStatement(sql);
 
 			// Establecer los valores del objeto en la sentencia SQL

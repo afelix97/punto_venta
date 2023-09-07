@@ -161,8 +161,12 @@ public class ControllerViewProductos implements HierarchyListener, ActionListene
 		int stock = !jpProductos.txtCantidad.getText().isEmpty() ? Integer.parseInt(jpProductos.txtCantidad.getText())
 				: 0;
 
-		String[] infoProv = jpProductos.cmbxProveedor.getSelectedItem().toString().split(" - ");
-		int id_prov = Integer.parseInt(infoProv[0]);
+		int id_prov = 0;
+		if (jpProductos.cmbxProveedor.getSelectedItem() != null) {
+
+			String[] infoProv = jpProductos.cmbxProveedor.getSelectedItem().toString().split(" - ");
+			id_prov = Integer.parseInt(infoProv[0]);
+		}
 
 		if (codigo == 0 || nombre.isEmpty() || descripcion.isEmpty() || precio == 0 || stock == 0 || id_prov == 0) {
 
@@ -314,15 +318,21 @@ public class ControllerViewProductos implements HierarchyListener, ActionListene
 	public void hierarchyChanged(HierarchyEvent e) {
 		if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && jpProductos.isShowing()) {
 			// Acción a realizar cuando el JPanel se muestra
-			loadTable(productosModel.getProductos());
 			loadProveedores();
+			loadTable(productosModel.getProductos());
 		}
 	}
 
 	private void loadProveedores() {
 		ArrayList<Proveedor> proveedores = proveedoresModel.getProveedores();
-		for (Proveedor proveedor : proveedores) {
 
+		// limpia el combo de empleados cada que se cargan los proveedores
+		if (jpProductos.cmbxProveedor.getItemCount() > 0) {
+			jpProductos.cmbxProveedor.removeAllItems();
+		}
+		jpProductos.cmbxProveedor.addItem("0 - Selecciona una opcion...");
+
+		for (Proveedor proveedor : proveedores) {
 			jpProductos.cmbxProveedor.addItem(proveedor.getId() + " - " + proveedor.getNombre());
 		}
 	}

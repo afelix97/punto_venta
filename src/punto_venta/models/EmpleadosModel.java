@@ -20,7 +20,7 @@ public class EmpleadosModel {
 		try {
 			stmt = conn.ObtConexion().createStatement();
 			String query = "select id as result from empleados where usuario = '" + user.getUser() + "' and pass = '"
-					+ user.getPass() + "';";
+					+ user.getPass() + "' and eliminado = 0;";
 
 			ResultSet rs = stmt.executeQuery(query);
 
@@ -46,8 +46,8 @@ public class EmpleadosModel {
 		ArrayList<Empleado> users = new ArrayList<>();
 		try {
 			Statement stmt = conn.ObtConexion().createStatement();
-			String query = "select * from empleados where id <> " + idUserLogueado + ";";
-			
+			String query = "select * from empleados where id <> " + idUserLogueado + " and eliminado = 0;";
+
 			ResultSet rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
@@ -162,7 +162,7 @@ public class EmpleadosModel {
 	public boolean deleteEmpleado(int id) {
 		boolean isDelete = false;
 		try {
-			String sql = "DELETE FROM EMPLEADOS WHERE id = ?;";
+			String sql = "UPDATE empleados SET eliminado = 1 WHERE id = ?;";
 			PreparedStatement statement = conn.ObtConexion().prepareStatement(sql);
 
 			// Establecer los valores del objeto en la sentencia SQL

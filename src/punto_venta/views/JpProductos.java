@@ -220,7 +220,6 @@ public class JpProductos extends JPanel {
 		jpForm.add(btnEliminar);
 
 		cmbxProveedor = new JComboBox<String>();
-		cmbxProveedor.addItem("0 - Selecciona una opcion...");
 		cmbxProveedor.setBounds(202, 190, 162, 26);
 		jpForm.add(cmbxProveedor);
 
